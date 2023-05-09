@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="css/reset.css"> <!-- CSS reset -->
+    <link rel="stylesheet" href="css/style.css"> <!-- Resource style -->
+
+    <title>Kaospilot</title>
+</head>
+<body>
+<header class="header"></header>
+<section class="popular-tolls"></section>
+<main class="main">
+    <div class="tab-filter-wrapper">
+        <div class="tab-filter">
+            <ul class="filters">
+                <li class="placeholder">
+                    <a data-type="all" href="#0">All</a> <!-- selected option on mobile -->
+                </li>
+                <li class="filter_item"><a class="selected" href="#0" data-type="all">All</a></li>
+                <li class="filter_item" data-filter=".color-1"><a href="#0" data-type="color-1">Color 1</a></li>
+                <li class="filter_item" data-filter=".color-2"><a href="#0" data-type="color-2">Color 2</a></li>
+            </ul> <!-- filters -->
+        </div> <!-- tab-filter -->
+    </div> <!-- tab-filter-wrapper -->
+
+    <section class="gallery">
+        <div class="fail-message">No results found</div>
+    </section> <!-- gallery -->
+
+    <div class="filter">
+        <form class="filter-form">
+            <div class="filter-block">
+                <h4>Check boxes</h4>
+
+                <ul class="filter-content filters list">
+                    <li>
+                        <input class="filter_item" data-filter=".check1" type="checkbox" id="checkbox1">
+                        <label class="checkbox-label" for="checkbox1">Option 1</label>
+                    </li>
+
+                    <li>
+                        <input class="filter_item" data-filter=".check2" type="checkbox" id="checkbox2">
+                        <label class="checkbox-label" for="checkbox2">Option 2</label>
+                    </li>
+
+                    <li>
+                        <input class="filter_item" data-filter=".check3" type="checkbox" id="checkbox3">
+                        <label class="checkbox-label" for="checkbox3">Option 3</label>
+                    </li>
+                </ul> <!-- filter-content -->
+            </div> <!-- filter-block -->
+        </form>
+
+        <a href="#0" class="close">Close</a>
+    </div> <!-- filter -->
+
+    <a href="#0" class="filter-trigger">Filters</a>
+</main>
+<script src="js/main.js"></script>
+</body>
+</html>
