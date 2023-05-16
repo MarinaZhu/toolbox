@@ -283,8 +283,9 @@ header {
     width: 100%;
 }
 
+
+
 .gallery .fail-message {
-    display: none;
     text-align: center;
 }
 
@@ -498,7 +499,7 @@ header {
 }
 
 .filter-block input,
-.filter-block .checkbox-label::before {
+.filter-block .checkbox-label::before{
     /* shared style for input elements */
     font-family: var(--primary-font);
     border-radius: 0;
@@ -515,6 +516,15 @@ header {
     margin-bottom: 0;
 }
 
+.filter-block .checkbox-label {
+    padding-left: 24px;
+    font-size: 1.4rem;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
 .filter-block input[type=checkbox] {
     /* hide original check and radio buttons */
     position: absolute;
@@ -524,15 +534,6 @@ header {
     padding: 0;
     opacity: 0;
     z-index: 2;
-}
-
-.filter-block .checkbox-label {
-    padding-left: 24px;
-    font-size: 1.4rem;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
 }
 
 .filter-block .checkbox-label::before, .filter-block .checkbox-label::after {
@@ -574,3 +575,58 @@ header {
 .filter-block input[type=checkbox]:checked + label::after {
     display: block;
 }
+
+.filter-block .sliders-control {
+    position: relative;
+    min-height: 30px;
+}
+
+.filter-block .filter-control {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+}
+
+.filter-block input[type="range"] {
+    height: 2px;
+    width: 80%;
+    border: none;
+    background-color: #e6e6e6;
+    position: absolute;
+    pointer-events: none;
+}
+
+.filter-block input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    pointer-events: all;
+    width: 16px;
+    height: 16px;
+    background-color: #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 0 1px #C6C6C6;
+    cursor: pointer;
+}
+
+.filter-block input[type=range]::-moz-range-thumb {
+    -webkit-appearance: none;
+    pointer-events: all;
+    width: 16px;
+    height: 16px;
+    background-color: #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 0 1px #C6C6C6;
+    cursor: pointer;
+}
+
+.filter-block input[type=range]::-webkit-slider-thumb:hover {
+    background: var(--color-2);
+}
+
+
+.filter-block #fromSlider{
+    height: 0;
+    z-index: 2;
+}
+
+
+

@@ -4,8 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="stylesheet" href="css/reset.css"> <!-- CSS reset -->
-    <link rel="stylesheet" href="css/style.css"> <!-- Resource style -->
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <!-- CSS reset -->
+    <link rel="stylesheet" href="css/reset.css">
+    <!-- Resource style -->
+    <link rel="stylesheet" href="css/cards.css">
+    <link rel="stylesheet" href="css/style.css">
 
     <title>Kaospilot</title>
 </head>
@@ -26,31 +31,144 @@
         </div> <!-- tab-filter -->
     </div> <!-- tab-filter-wrapper -->
 
-    <section class="gallery">
-        <div class="fail-message">No results found</div>
-    </section> <!-- gallery -->
+    <div class="forPopupLayout">
+        <div class="popup-text" id="myPopup">
+
+            <button class="popupClose">&#10006;</button>
+            <div class="popup-header">
+
+                <img id="popup-main-image" class="workshop-image" src="img/img-cards/teamwork.png" alt="workshope image" width="150px">
+                <div class="popup-workshop-title-container">
+                    <h1 class="popup-h1" id="popup-header"></h1>
+                    <div id="popup-info-container">
+                        <img src="img/img-cards/Difficulty---medium.png" alt="dificulty" height="30px">
+                        <span id="popup-difficulty" class="popup-info popup-span"></span>
+                        <img src="img/img-cards/people.png" alt="The number of participants" height="30px">
+                        <span id="popup-participants" class="popup-span"></span>
+                        <img src="img/img-cards/clock.png" alt="Duration" height="30px">
+                        <span id="popup-duration" class="popup-span"></span>
+                    </div>
+                </div>
+
+                <div class="popup-share">
+                    <img class="share-buttons" src="img/img-cards/share.png" alt="share icon" width="50px">
+                    <img class="share-buttons favorite" src="img/img-cards/Heart---clicked.png" alt="favorite icon" width="50px">
+
+                </div>
+
+            </div>
+            <div id="popup-full-container">
+                <div id="popup-container">
+                    <p class="popup-p">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quibusdam, corrupti. Saepe
+                        quasi,
+                        aut ipsum itaque suscipit at qui! Delectus reiciendis unde explicabo minima doloremque deleniti
+                        accusantium voluptates eligendi, eaque numquam ipsa, quia odio tenetur in vero velit, earum
+                        veniam minus. Deserunt quisquam recusandae nostrum nemo dolor, nisi magnam illum voluptates
+                        dolore. Natus sequi odio accusamus deserunt repellendus veritatis nemo perferendis nostrum rem
+                        qui neque recusandae sunt reiciendis cumque fuga fugiat cupiditate, illum debitis autem tempora
+                        non temporibus pariatur, officiis suscipit? </p>
+                    <hr>
+                    <h3 class="popup-h3">Goals</h3>
+                    <p class="popup-p">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Illo, natus ratione eos quod
+                        ipsa
+                        amet!</p>
+                    <hr>
+                    <h3 class="popup-h3">Attachments</h3>
+                    <a href="img/img-cards/instructionForWorkshop.docx" download="file_name"><img
+                            src="img/img-cards/attachmentIcon.JPG"></a>
+                    <hr>
+                    <h3 class="popup-h3">Materials</h3>
+                    <ul class="materials">
+                        <li class="popup-li">Table</li>
+                        <li class="popup-li">Several boxes of Lego</li>
+                    </ul>
+                    <hr>
+                    <h3 class="popup-h3">Instructions</h3>
+                    <h4>Step 1</h4>
+                    <p class="popup-p">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique, sed voluptate
+                        quasi
+                        cum consequuntur molestias.</p>
+
+                    <p class="instruction-note">Facilitator note</p>
+                    <p class="instrustion-note-text">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Tempore,
+                        perspiciatis.</p>
+                    <h4>Step 2</h4>
+                    <p class="popup-p">Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur excepturi
+                        perspiciatis
+                        maxime, aliquid ut itaque similique nihil ullam iusto eum obcaecati distinctio dolore!</p>
+                    <h4>Step 3</h4>
+                    <p class="popup-p"> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Explicabo minus nemo vitae
+                        laborum a,
+                        nisi in sint, illum, provident rem eos magnam! Beatae voluptatibus hic minima vitae dolores.
+                        Laboriosam, itaque.</p>
+                </div>
+            </div>
+
+        </div>
+    </div><!-- forPopupLayout -->
+
+    <section class="gallery"></section> <!-- gallery -->
 
     <div class="filter">
         <form class="filter-form">
             <div class="filter-block">
-                <h4>Check boxes</h4>
-
+                <h4>Difficulty</h4>
                 <ul class="filter-content filters list">
                     <li>
-                        <input class="filter_item" data-filter=".check1" type="checkbox" id="checkbox1">
-                        <label class="checkbox-label" for="checkbox1">Option 1</label>
+                        <input class="filter_item" data-filter=".low" type="checkbox" id="checkboxLow">
+                        <label class="checkbox-label" for="checkboxLow">Low</label>
                     </li>
 
                     <li>
-                        <input class="filter_item" data-filter=".check2" type="checkbox" id="checkbox2">
-                        <label class="checkbox-label" for="checkbox2">Option 2</label>
+                        <input class="filter_item" data-filter=".medium" type="checkbox" id="checkboxMedium">
+                        <label class="checkbox-label" for="checkboxMedium">Medium</label>
                     </li>
 
                     <li>
-                        <input class="filter_item" data-filter=".check3" type="checkbox" id="checkbox3">
-                        <label class="checkbox-label" for="checkbox3">Option 3</label>
+                        <input class="filter_item" data-filter=".hard" type="checkbox" id="checkboxHard">
+                        <label class="checkbox-label" for="checkboxHard">Hard</label>
                     </li>
                 </ul> <!-- filter-content -->
+            </div> <!-- filter-block -->
+
+            <div class="filter-block">
+                <h4>Category</h4>
+                <ul class="filter-content filters list">
+                    <li>
+                        <input class="filter_item" data-filter=".energizer" type="checkbox" id="checkboxEnergizer">
+                        <label class="checkbox-label" for="checkboxEnergizer">Energizer</label>
+                    </li>
+
+                    <li>
+                        <input class="filter_item" data-filter=".team" type="checkbox" id="checkboxTeam">
+                        <label class="checkbox-label" for="checkboxTeam">Team</label>
+                    </li>
+
+                    <li>
+                        <input class="filter_item" data-filter=".idea" type="checkbox" id="checkboxIdea">
+                        <label class="checkbox-label" for="checkboxIdea">Idea generation</label>
+                    </li>
+                </ul> <!-- filter-content -->
+            </div> <!-- filter-block -->
+
+            <div class="filter-block">
+                <h4>Number of participants</h4>
+                <div class="filter-content filters sliders">
+                    <div class="sliders-control">
+                        <input id="fromSlider" type="range" value="10" min="0" max="100"/>
+                        <input id="toSlider" type="range" value="30" min="0" max="100"/>
+                    </div>
+                    <div class="filter-control">
+                        <div class="filter-control-container">
+                            <div class="filter-control-container__time">Min</div>
+                            <input class="filter-control-container__input" type="number" id="fromInput" value="10" min="0" max="100"/>
+                        </div>
+                        <div class="filter-control-container">
+                            <div class="filter-control-container__time">Max</div>
+                            <input class="filter-control-container__input" type="number" id="toInput" value="30" min="0" max="100"/>
+                        </div>
+                    </div>
+                </div>
             </div> <!-- filter-block -->
         </form>
 
@@ -60,5 +178,6 @@
     <a href="#0" class="filter-trigger">Filters</a>
 </main>
 <script src="js/main.js"></script>
+
 </body>
 </html>
