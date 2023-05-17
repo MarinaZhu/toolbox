@@ -32,6 +32,22 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function checkAndRender(filteredItems) {
+        // Clear previous results
+        gallery.innerHTML = '';
+
+        // Check if there are any filtered items
+        if (filteredItems.length === 0) {
+            const failMessage = document.createElement('div');
+            failMessage.classList.add('fail-message');
+            failMessage.textContent = 'No results found';
+            gallery.appendChild(failMessage);
+        } else {
+            // Render filtered items
+            renderCards(filteredItems);
+        }
+    }
+
     fetch('workshops1.json').then((response) => response.json()).then((json) => {
         renderCards(json);
     });
@@ -108,19 +124,9 @@ window.addEventListener('DOMContentLoaded', () => {
                         return selectedCheckboxes.includes('.' + itemDifficulty);
                     });
 
-                    // Clear the existing content in the container
-                    gallery.innerHTML = '';
+                    /* ---------- ZOU ---------- */
 
-                    // Check if there are any filtered items
-                    if (filteredItems.length === 0) {
-                        const failMessage = document.createElement('div');
-                        failMessage.classList.add('fail-message');
-                        failMessage.textContent = 'No results found';
-                        gallery.appendChild(failMessage);
-                    } else {
-                        // Render filtered items
-                        renderCards(filteredItems);
-                    }
+                    checkAndRender(filteredItems);
                 }
             });
         });
@@ -130,20 +136,27 @@ window.addEventListener('DOMContentLoaded', () => {
 
     //sets the minimum value of the range slider and its corresponding #fromInput field
     function controlFromInput(fromSlider, fromInput, toInput, controlSlider) {
+        // Get parsed 'from' and 'to' values from input fields
         const [from, to] = getParsed(fromInput, toInput);
-        fillSlider(fromInput, toInput, '#C6C6C6', '#25daa5', controlSlider);
+        // Fill the slider track with color
+        fillSlider(fromInput, toInput, '#C6C6C6', '#0000FF', controlSlider);
+        // If 'from' value is greater than 'to' value, update 'from' slider and input to match 'to' value
         if (from > to) {
             fromSlider.value = to;
             fromInput.value = to;
         } else {
+            // Otherwise, update 'from' slider to match 'from' value
             fromSlider.value = from;
         }
     }
 
     //sets the maximum value of the range slider and its corresponding #toInput field
     function controlToInput(toSlider, fromInput, toInput, controlSlider) {
+        // Get parsed 'from' and 'to' values from input fields
         const [from, to] = getParsed(fromInput, toInput);
-        fillSlider(fromInput, toInput, '#C6C6C6', '#25daa5', controlSlider);
+        // Fill the slider track with color
+        fillSlider(fromInput, toInput, '#C6C6C6', '#0000FF', controlSlider);
+        // Set accessibility of 'to' slider
         setToggleAccessible(toInput);
         if (from <= to) {
             toSlider.value = to;
@@ -156,7 +169,7 @@ window.addEventListener('DOMContentLoaded', () => {
     //function updates the #fromInput field when the range slider is adjusted by the user
     function controlFromSlider(fromSlider, toSlider, fromInput) {
         const [from, to] = getParsed(fromSlider, toSlider);
-        fillSlider(fromSlider, toSlider, '#C6C6C6', '#25daa5', toSlider);
+        fillSlider(fromSlider, toSlider, '#C6C6C6', '#0000FF', toSlider);
         if (from > to) {
             fromSlider.value = to;
             fromInput.value = to;
@@ -168,7 +181,7 @@ window.addEventListener('DOMContentLoaded', () => {
     //function updates the #toInput field when the range slider is adjusted by the user
     function controlToSlider(fromSlider, toSlider, toInput) {
         const [from, to] = getParsed(fromSlider, toSlider);
-        fillSlider(fromSlider, toSlider, '#C6C6C6', '#25daa5', toSlider);
+        fillSlider(fromSlider, toSlider, '#C6C6C6', '#0000FF', toSlider);
         setToggleAccessible(toSlider);
         if (from <= to) {
             toSlider.value = to;
@@ -186,11 +199,24 @@ window.addEventListener('DOMContentLoaded', () => {
         return [from, to];
     }
 
+    //Range filter, returns a promise
+    function rangeFilter(from, to) {
+        return fetch('workshops1.json')
+            .then((response) => response.json())
+            .then((items) => {
+                return items.filter(item => {
+                    return item.minNumberOfParticipants >= parseInt(from, 10) && item.maxNumberOfParticipants <= parseInt(to, 10);
+                });
+            });
+    }
+
     //function fills the range slider track with a gradient color based on the current values of the 'from' and 'to' input fields
     function fillSlider(from, to, sliderColor, rangeColor, controlSlider) {
+        // Calculate range distance and positions of 'from' and 'to' values
         const rangeDistance = to.max-to.min;
         const fromPosition = from.value - to.min;
         const toPosition = to.value - to.min;
+        // Apply gradient background color to slider
         controlSlider.style.background = `linear-gradient(
       to right,
       ${sliderColor} 0%,
@@ -199,13 +225,24 @@ window.addEventListener('DOMContentLoaded', () => {
       ${rangeColor} ${(toPosition)/(rangeDistance)*100}%, 
       ${sliderColor} ${(toPosition)/(rangeDistance)*100}%, 
       ${sliderColor} 100%)`;
+
+        rangeFilter(from.value, to.value)
+            .then(filteredItems => {
+                checkAndRender(filteredItems);
+            })
+            .catch(error => {
+                console.log('Error occurred:', error);
+            });
     }
 
+    // Define function to set accessibility of 'to' slider
     function setToggleAccessible(currentTarget) {
         const toSlider = document.querySelector('#toSlider');
+        // If 'to' value is zero or less, set 'to' slider z-index to make it accessible
         if (Number(currentTarget.value) <= 0 ) {
             toSlider.style.zIndex = 2;
         } else {
+            // Otherwise, set 'to' slider z-index to default
             toSlider.style.zIndex = 0;
         }
     }
@@ -214,7 +251,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const toSlider = document.querySelector('#toSlider');
     const fromInput = document.querySelector('#fromInput');
     const toInput = document.querySelector('#toInput');
-    fillSlider(fromSlider, toSlider, '#C6C6C6', '#25daa5', toSlider);
+    fillSlider(fromSlider, toSlider, '#C6C6C6', '#0000FF', toSlider);
     setToggleAccessible(toSlider);
 
     fromSlider.oninput = () => controlFromSlider(fromSlider, toSlider, fromInput);
