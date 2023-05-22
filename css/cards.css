@@ -1,3 +1,7 @@
+body.no-scroll {
+    overflow: hidden;
+}
+
 .gallery .card {
     width: 100%;
     aspect-ratio: 6/5;
@@ -47,11 +51,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(128,128,128,0.5); /* color */
+    z-index: 5;
     visibility: hidden;
 }
 
@@ -71,7 +75,7 @@
 }
 
 
-/*#popupTitle,
+#popupTitle,
 #popupFromJson {
     font-weight: bold;
     padding-bottom: 20px;
@@ -188,10 +192,10 @@ hr {
 .share-buttons:hover {
     border: 2px solid #BDBDBD;
     border-radius: 8px;
-}*/
+}
 
 /*Custom scrollbar: */
-/*::-webkit-scrollbar {
+::-webkit-scrollbar {
     width: 17px;
 }
 
@@ -202,4 +206,4 @@ hr {
 
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
-}*/
+}

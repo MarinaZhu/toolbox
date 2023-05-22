@@ -29,7 +29,11 @@ window.addEventListener('DOMContentLoaded', () => {
     const fromSlider = document.querySelector('#fromSlider'),
           toSlider = document.querySelector('#toSlider'),
           fromInput = document.querySelector('#fromInput'),
-          toInput = document.querySelector('#toInput');
+          toInput = document.querySelector('#toInput'),
+          fromSliderTime = document.querySelector('#fromSliderTime'),
+          toSliderTime = document.querySelector('#toSliderTime'),
+          fromInputTime = document.querySelector('#fromInputTime'),
+          toInputTime = document.querySelector('#toInputTime');
 
     /*---------- PopUp ---------*/
     const popupClose = document.querySelector(".popupClose"),
@@ -89,14 +93,15 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
         /*---------- PopUp ---------*/
-
+        const body = document.querySelector("body");
         function popupOpen(cardData) {
             popupHeader.innerText = cardData.title;
             popupDifficulty.innerText = cardData.difficulty;
             popupParticipants.innerText = `${cardData.minNumberOfParticipants} - ${cardData.maxNumberOfParticipants}`;
             popupDuration.innerText = `${cardData.minDuration} - ${cardData.maxDuration}`;
             popupMainImage.setAttribute("src", cardData.popupImage);
-            popup.classList.toggle("show");
+            popup.classList.add("show");
+            body.classList.add("no-scroll");
         }
 
         gallery.addEventListener("click", (event) => {
@@ -112,6 +117,7 @@ window.addEventListener('DOMContentLoaded', () => {
         //close popup when user clicks at Close button
         popupClose.addEventListener("click", () => {
             popup.classList.remove("show");
+            body.classList.remove("no-scroll");
         });
 
 
@@ -218,21 +224,25 @@ window.addEventListener('DOMContentLoaded', () => {
                 .filter(checkbox => checkbox.checked)
                 .map(checkbox => checkbox.dataset.filter);
 
-            //ZOU
+            // Get the selected category values
+            const selectedCategories = Array.from(categoryCheckboxes)
+                .filter(checkbox => checkbox.checked)
+                .map(checkbox => checkbox.dataset.filter);
 
             // Get the selected range values
             const fromValue = parseInt(fromSlider.value);
             const toValue = parseInt(toSlider.value);
+            const fromValueTime = parseInt(fromSliderTime.value);
+            const toValueTime = parseInt(toSliderTime.value);
 
             // Filter the items
             const filteredItems = items.filter(item => {
                 const itemDifficulty = item.difficulty.toLowerCase();
-                //ZOU
-
+                const itemCategory = item.category.toLowerCase();
 
                 //checks if either no difficulty checkboxes are selected or if the item's difficulty is included in the values array
                 const isDifficultyMatch = selectedDifficulties.length === 0 || selectedDifficulties.includes(itemDifficulty);
-                //ZOU
+                const isCategoryMatch = selectedCategories.length === 0 || selectedCategories.includes(itemCategory);
 
                 // Check if the item matches the range filter
                 const isRangeMatch = (
@@ -241,8 +251,14 @@ window.addEventListener('DOMContentLoaded', () => {
                     (item.minNumberOfParticipants <= fromValue && item.maxNumberOfParticipants >= toValue)
                 );
 
+                const isRangeTimeMatch = (
+                    (item.minDuration >= fromValueTime && item.minDuration <= toValueTime) ||
+                    (item.maxDuration >= fromValueTime && item.maxDuration <= toValueTime) ||
+                    (item.minDuration <= fromValueTime && item.maxDuration >= toValueTime)
+                );
+
                 // Return true if all conditions are satisfied
-                return isDifficultyMatch && isCategoryMatch && isRangeMatch;
+                return isDifficultyMatch && isCategoryMatch && isRangeMatch && isRangeTimeMatch;
             });
 
             checkAndRender(filteredItems);
@@ -252,7 +268,9 @@ window.addEventListener('DOMContentLoaded', () => {
             checkbox.addEventListener('change', handleFilterChange);
         });
 
-
+        categoryCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', handleFilterChange);
+        });
 
 
         /* ---------- Slider ---------- */
@@ -356,10 +374,18 @@ window.addEventListener('DOMContentLoaded', () => {
         fillSlider(fromSlider, toSlider, '#C6C6C6', '#0000FF', toSlider);
         setToggleAccessible(toSlider);
 
+        fillSlider(fromSliderTime, toSliderTime, '#C6C6C6', '#0000FF', toSliderTime);
+        setToggleAccessible(toSliderTime);
+
         fromSlider.oninput = () => controlFromSlider(fromSlider, toSlider, fromInput);
         toSlider.oninput = () => controlToSlider(fromSlider, toSlider, toInput);
         fromInput.oninput = () => controlFromInput(fromSlider, fromInput, toInput, toSlider);
         toInput.oninput = () => controlToInput(toSlider, fromInput, toInput, toSlider);
+
+        fromSliderTime.oninput = () => controlFromSlider(fromSliderTime, toSliderTime, fromInputTime);
+        toSliderTime.oninput = () => controlToSlider(fromSliderTime, toSliderTime, toInputTime);
+        fromInputTime.oninput = () => controlFromInput(fromSliderTime, fromInputTime, toInputTime, toSliderTime);
+        toInputTime.oninput = () => controlToInput(toSliderTime, fromInputTime, toInputTime, toSliderTime);
 
     }).catch(error => {
         console.log('Error occurred:', error);

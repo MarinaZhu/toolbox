@@ -159,12 +159,32 @@
                     </div>
                     <div class="filter-control">
                         <div class="filter-control-container">
-                            <div class="filter-control-container__time">Min</div>
+                            <div class="filter-control-container__participants">Min</div>
                             <input class="filter-control-container__input" type="number" id="fromInput" value="1" min="1" max="50"/>
                         </div>
                         <div class="filter-control-container">
-                            <div class="filter-control-container__time">Max</div>
+                            <div class="filter-control-container__participants">Max</div>
                             <input class="filter-control-container__input" type="number" id="toInput" value="50" min="1" max="50"/>
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- filter-block -->
+
+            <div class="filter-block">
+                <h4>Duration</h4>
+                <div class="filter-content filters sliders">
+                    <div class="sliders-control">
+                        <input id="fromSliderTime" type="range" value="10" min="10" max="120"/>
+                        <input id="toSliderTime" type="range" value="120" min="10" max="120"/>
+                    </div>
+                    <div class="filter-control">
+                        <div class="filter-control-container">
+                            <div class="filter-control-container__time">Min</div>
+                            <input class="filter-control-container__input" type="number" id="fromInputTime" value="10" min="10" max="120"/>
+                        </div>
+                        <div class="filter-control-container">
+                            <div class="filter-control-container__time">Max</div>
+                            <input class="filter-control-container__input" type="number" id="toInputTime" value="120" min="10" max="120"/>
                         </div>
                     </div>
                 </div>
