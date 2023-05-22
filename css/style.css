@@ -290,12 +290,13 @@ header {
 
 .gallery .fail-message {
     text-align: center;
+    grid-column: 2;
 }
 
 @media only screen and (min-width: 768px) {
     .gallery {
         padding: 40px 5%;
-        grid-template-columns: repeat(2, 48%);
+        grid-template-columns: repeat(2, 1fr);
         gap: 2rem;
     }
 }
@@ -307,7 +308,7 @@ header {
         -webkit-transition: width 0.3s;
         -moz-transition: width 0.3s;
         transition: width 0.3s;
-        grid-template-columns: repeat(3, 32%);
+        grid-template-columns: repeat(3, 1fr);
         gap: 3rem;
     }
 
@@ -360,6 +361,13 @@ header {
 
 .filter-form {
     padding: 70px 20px;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* Internet Explorer and Edge */
+}
+
+/*Remove scrollbar from an filter*/
+.filter-form::-webkit-scrollbar {
+    width: 0px;
 }
 
 .filter .close {
@@ -634,7 +642,7 @@ header {
 }
 
 
-.filter-block #fromSlider{
+.filter-block #fromSlider, .filter-block #fromSliderTime{
     height: 0;
     z-index: 2;
 }
