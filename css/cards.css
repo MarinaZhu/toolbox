@@ -1,8 +1,6 @@
-.card {
-    width: 300px;
-    height: 250px;
-    margin: 20px;
-    display: inline-block;
+.gallery .card {
+    width: 100%;
+    aspect-ratio: 6/5;
 }
 
 .box2 {
@@ -45,37 +43,35 @@
 
 /* Style for popup*/
 
-.forPopupLayout {
+.popup {
     display: flex;
     align-items: center;
     justify-content: center;
-
-
-}
-
-#myPopup {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
     visibility: hidden;
-    width: 80%;
-    height: 90vh;
-    position: fixed;
-    margin-bottom: 80px;
-    background-color: white;
-    z-index: 1;
-    /* display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center; */
-    border: 1px solid #3F3737;
-    overflow: scroll;
-    overflow-x: hidden;
-
 }
 
-#myPopup.show {
+.popup.show {
     visibility: visible;
 }
 
-#popupTitle,
+#myPopup {
+    width: 90vw;
+    height: 90vh;
+    position: fixed;
+    background-color: white;
+    z-index: 5;
+    border: 1px solid #3F3737;
+    overflow: scroll;
+    overflow-x: hidden;
+}
+
+
+/*#popupTitle,
 #popupFromJson {
     font-weight: bold;
     padding-bottom: 20px;
@@ -89,27 +85,6 @@
     float: right;
 
 }
-
-
-
-/*Style for pop up*/
-.popup-container-for-full-popup {
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-}
-
-/*#popup-main-container{
-width: 80%;
-
-border: 1px solid #BDBDBD;
-margin-top: 50px;
-margin-bottom: 50px;
-overflow: scroll;
-overflow-x: hidden;
-
-}*/
 
 #popup-full-container {
     display: flex;
@@ -135,7 +110,6 @@ overflow-x: hidden;
     margin-top: 20px;
     padding-bottom: 20px;
     flex-direction: row;
-
 
 }
 
@@ -214,10 +188,10 @@ hr {
 .share-buttons:hover {
     border: 2px solid #BDBDBD;
     border-radius: 8px;
-}
+}*/
 
 /*Custom scrollbar: */
-::-webkit-scrollbar {
+/*::-webkit-scrollbar {
     width: 17px;
 }
 
@@ -228,4 +202,4 @@ hr {
 
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
-}
+}*/

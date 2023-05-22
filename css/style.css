@@ -68,7 +68,7 @@ header {
     clear: both;
 }
 
-.main.is-fixed .filter-wrapper {
+.main.is-fixed .tab-filter-wrapper {
     position: fixed;
     top: 0;
     left: 0;
@@ -281,8 +281,11 @@ header {
 .gallery {
     padding: 26px 5%;
     width: 100%;
+    display: grid;
+    justify-content: center;
+    grid-template-columns: 100%;
+    row-gap: 2rem;
 }
-
 
 
 .gallery .fail-message {
@@ -291,17 +294,21 @@ header {
 
 @media only screen and (min-width: 768px) {
     .gallery {
-        padding: 40px 3%;
+        padding: 40px 5%;
+        grid-template-columns: repeat(2, 48%);
+        gap: 2rem;
     }
 }
 
 @media only screen and (min-width: 1170px) {
     .gallery {
-        padding: 50px 2%;
+        padding: 50px 4%;
         float: right;
         -webkit-transition: width 0.3s;
         -moz-transition: width 0.3s;
         transition: width 0.3s;
+        grid-template-columns: repeat(3, 32%);
+        gap: 3rem;
     }
 
     .gallery.filter-is-visible {
@@ -467,6 +474,10 @@ header {
     cursor: pointer;
 }
 
+.filter-block h4 + *.hide {
+   display: none;
+}
+
 .filter-block h4:hover {
     color: var(--color-2);
 }
@@ -627,6 +638,8 @@ header {
     height: 0;
     z-index: 2;
 }
+
+
 
 
 
