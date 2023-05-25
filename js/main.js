@@ -47,10 +47,23 @@ window.addEventListener('DOMContentLoaded', () => {
 
     // Fetch JSON data and render initial cards
     fetch('workshops1.json').then(response => response.json()).then(items => {
+        let currentCardsToShowAmount = 6;
+        let latestFilteredCardsFull;
         renderCards(items);
 
         //render new workshops from json file dinamically
         function renderCards(cardsArray) {
+            latestFilteredCardsFull = cardsArray
+            if (cardsArray.length > currentCardsToShowAmount) {
+                let reducedCardsArray = cardsArray.slice(0,currentCardsToShowAmount);
+                renderCardsRaw(reducedCardsArray);
+            } else {
+                renderCardsRaw(cardsArray);                        
+            }
+        }
+
+        function renderCardsRaw(cardsArray) {
+            console.log(cardsArray.length);
             for (let i = 0; i < cardsArray.length; i++) {
                 const card = document.createElement("div");
                 card.classList.add('card');
@@ -370,6 +383,20 @@ window.addEventListener('DOMContentLoaded', () => {
                 toSlider.style.zIndex = 0;
             }
         }
+
+        /* ---------- Load-more button ---------- */
+        const loadMore = () => {
+            console.log("current card" + currentCardsToShowAmount);
+            currentCardsToShowAmount = currentCardsToShowAmount + 6;
+            checkAndRender(latestFilteredCardsFull);
+            //renderCards(latestFilteredCardsFull);
+            //to do:
+            // if latestFilterCardsFull.length <= (currentCardsToShowAmount - 6)
+            // then display message & hide load more button
+            // make sure that if cards are rendered again, load more button is shown again
+        }
+        const loadMoreButton = document.getElementById("loadMoreButton");
+        loadMoreButton.addEventListener('click', loadMore)
 
         fillSlider(fromSlider, toSlider, '#C6C6C6', '#0000FF', toSlider);
         setToggleAccessible(toSlider);
