@@ -646,8 +646,131 @@ header {
     height: 0;
     z-index: 2;
 }
+ /* Footer */ 
 
+  footer {
+    background-color: #232946;
+    padding: 20px;
+    font-family: 'Open Sans', sans-serif;
+  }
+  
+  .container {
+    background-color: #232946;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 15px;
+  }
+  
+  .section {
+    flex-basis: 30%;
+    margin-right: 10px;
+    color: #fffffe;
+    font-family: 'Open Sans', sans-serif;
+    
+  }
+  
+  .section p a {
+    color: inherit;
+  }
+  
+  .container h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-weight: bold;
+  }
+  
+  .container p {
+    margin-bottom: 10px;
+    line-height: 1.5;
+  }
+  .involved{
+    margin-right: 5px;    
+  }
 
+  .container ul { 
+    list-style: none;
+    padding: 0;
+  }
+  
+  .container ul li {
+    margin-bottom: 5px;
+  }
+  
+  .container ul li a {
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  .container .section:not(:last-child) {
+    border-right: 1px solid #ccc;
+    border-bottom: none;
+  }
+  
+  .container .section:first-child {
+    border-left: none;
+  }
+  
+  .container .section:last-child {
+    border-right: none;
+    border-bottom: none;
+  }
+  .section .social{
+    margin-right: 10px; 
+  }
+  .social-media {
+    display: flex;
+    align-items: center;
+    color: #fffffe;
+    margin: 0 10px;
+    font-size: 2em;
+    padding-top: 10px;
+  }
+  .social-media-footer {
+    display: inline-block;
+    align-items: center;
+    color: #fffffe;
+    margin: 0 10px;
+    font-size: 2em;
+    padding-top: 10px;
+  }
+  
+  .social-media:hover {
+    color: #b8c1ec;
+  }
+  /* Styles for screens up to 600px wide */
+  @media (max-width: 600px) {
+    .container {
+      flex-direction: column;
+    }
+  
+    .section {
+      flex-basis: 100%;
+    }
+  
+    .container .section:not(:last-child) {
+      border-left: none;
+    }
+  
+    .social-media {
+      font-size: 1.5em;
+      margin: 0 5px;
+    }
 
+    .section{
+       margin-bottom: 50px;
+    }
 
-
+    .social-media-footer {
+        display: inline-block;
+        align-items: center;
+        color: #fffffe;
+        margin: 0 10px;
+        font-size: 2em;
+        padding-top: 10px;
+      }
+      .container .section:not(:last-child) {
+        border-right: none;
+        border-bottom: none;
+      }
+  }
