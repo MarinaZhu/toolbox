@@ -3,12 +3,13 @@ window.addEventListener('DOMContentLoaded', () => {
 
     /*---------- Cards ---------*/
     const gallery = document.querySelector(".gallery");
+    const swiperWrapper = document.querySelector(".swiper-wrapper");
 
     /* ---------- Sort ---------- */
     // Mobile version - detect click event on filters tab
     const filterTab = document.querySelector('.tab-filter'),
-          filterTabPlaceholder = filterTab.querySelector('.placeholder a'),
-          filterTabSortOption = filterTab.querySelectorAll('li');
+        filterTabPlaceholder = filterTab.querySelector('.placeholder a'),
+        filterTabSortOption = filterTab.querySelectorAll('li');
     const filterTabPlaceholderDefaultValue = 'Select';
     let filterTabPlaceholderText = filterTabPlaceholder.textContent;
 
@@ -22,70 +23,150 @@ window.addEventListener('DOMContentLoaded', () => {
 
     //Checkboxes
     const filterForm = document.querySelector('.filter-form'),
-          difficultyCheckboxes = filterForm.querySelectorAll('.filter_difficulty'),
-          categoryCheckboxes = document.querySelectorAll('.filter_category');
+        difficultyCheckboxes = filterForm.querySelectorAll('.filter_difficulty'),
+        categoryCheckboxes = document.querySelectorAll('.filter_category');
 
     //Slider
     const fromSlider = document.querySelector('#fromSlider'),
-          toSlider = document.querySelector('#toSlider'),
-          fromInput = document.querySelector('#fromInput'),
-          toInput = document.querySelector('#toInput'),
-          fromSliderTime = document.querySelector('#fromSliderTime'),
-          toSliderTime = document.querySelector('#toSliderTime'),
-          fromInputTime = document.querySelector('#fromInputTime'),
-          toInputTime = document.querySelector('#toInputTime');
+        toSlider = document.querySelector('#toSlider'),
+        fromInput = document.querySelector('#fromInput'),
+        toInput = document.querySelector('#toInput'),
+        fromSliderTime = document.querySelector('#fromSliderTime'),
+        toSliderTime = document.querySelector('#toSliderTime'),
+        fromInputTime = document.querySelector('#fromInputTime'),
+        toInputTime = document.querySelector('#toInputTime');
 
     /*---------- PopUp ---------*/
-    const popupClose = document.querySelector(".popupClose"),
-          popupHeader = document.getElementById("popup-header"),
-          popupDifficulty = document.getElementById("popup-difficulty"),
-          popupParticipants = document.getElementById("popup-participants"),
-          popupDuration = document.getElementById("popup-duration"),
-          popupMainImage = document.getElementById("popup-main-image"),
-          popup = document.querySelector(".popup");
+    const popup = document.querySelector(".popup"),
+        popupWrapper = popup.querySelector(".popup-wrapper"),
+        popupClose = popup.querySelector(".popup-close-btn"),
+        popupHeader = popup.querySelector(".popup-header-title"),
+        popupDifficulty = popup.querySelector(".info-item-title__difficulty"),
+        popupParticipants = popup.querySelector(".info-item-title__participants"),
+        popupDuration = popup.querySelector(".info-item-title__duration"),
+        popupMainImage = popup.querySelector(".popup-main-image"),
+        popupPitch = popup.querySelector(".main-paragraph-pitch"),
+        popupDescription = popup.querySelector(".main-paragraph-description"),
+        popupMatirials = popup.querySelector(".main-paragraph-materials"),
+        popupSource = popup.querySelector(".main-paragraph-source"),
+        fullStepContainer = document.getElementById("main-steps-container"),
+        popupPrintBtn = popup.querySelector(".popup-print-btn");
 
 
     // Fetch JSON data and render initial cards
     fetch('workshops1.json').then(response => response.json()).then(items => {
+        // Add the `id` property to each object using the index as the value
+        items = items.map((item, index) => {return { ...item, id: index + 1 };});
+
         let currentCardsToShowAmount = 6;
         let latestFilteredCardsFull;
-        renderCards(items);
+        renderSwiper(items);
+        renderCardsRow(items);
 
         //render new workshops from json file dinamically
-        function renderCards(cardsArray) {
-            latestFilteredCardsFull = cardsArray
+        function renderCardsRow(cardsArray) {
+            latestFilteredCardsFull = cardsArray;
             if (cardsArray.length > currentCardsToShowAmount) {
-                let reducedCardsArray = cardsArray.slice(0,currentCardsToShowAmount);
-                renderCardsRaw(reducedCardsArray);
+                const reducedCardsArray = cardsArray.slice(0, currentCardsToShowAmount);
+                renderCards(reducedCardsArray);
+
+                // Load more button
+                const loadMoreButton = document.createElement("button");
+                loadMoreButton.classList.add('load-more', 'btn');
+                loadMoreButton.textContent = 'Load more';
+                gallery.appendChild(loadMoreButton);
+
+                loadMoreButton.addEventListener('click', () => {
+                    currentCardsToShowAmount = currentCardsToShowAmount + 6;
+                    checkAndRender(latestFilteredCardsFull);
+                });
             } else {
-                renderCardsRaw(cardsArray);                        
+                renderCards(cardsArray);
             }
         }
 
-        function renderCardsRaw(cardsArray) {
-            console.log(cardsArray.length);
-            for (let i = 0; i < cardsArray.length; i++) {
-                const card = document.createElement("div");
-                card.classList.add('card');
+        function renderCards(cardsArray, parentElement = gallery) {
+            for (const cardData of cardsArray) {
+                const card = createCardElement(cardData);
 
-                card.innerHTML = `<div class="box2" style="background-color: ${cardsArray[i].backgroundColor}">
-        <img class="imageOfType" src="${cardsArray[i].typeImage}" width="30px"></div>
-        <div class="box3">
-          <p class="title">${cardsArray[i].title}</p>
-          <br>
-          <i class="material-icons" style="font-size: 25px; padding-left: 10px">
-            signal_cellular_alt_2_bar
-          </i>
-
-          <span class="icon-span">${cardsArray[i].difficulty}</span>
-          <i class="material-icons">group</i>
-          <span class="icon-span">${cardsArray[i].minNumberOfParticipants} - ${cardsArray[i].maxNumberOfParticipants}</span>
-          <i class="material-icons">schedule</i>
-          <span class="icon-span">${cardsArray[i].minDuration} - ${cardsArray[i].maxDuration}</span>
-        </div>`;
-
-                gallery.appendChild(card);
+                // Add 'swiper-slide' class to the card when rendering in the swiper
+                if (parentElement.classList.contains('swiper-wrapper')) {
+                    card.classList.add('swiper-slide');
+                }
+                parentElement.appendChild(card);
             }
+        }
+
+        function createCardElement(cardData) {
+            const card = document.createElement("div");
+            card.classList.add('card');
+            // Assign the object's ID as a custom attribute
+            card.setAttribute('data-id', cardData.id);
+
+            const cardImg = document.createElement("div");
+            cardImg.classList.add("card-img");
+            cardImg.style.backgroundImage = `url(${cardData.backgroungImage})`;
+
+            for (const imageSrc of cardData.typeImage) {
+                const img = document.createElement("img");
+                img.classList.add("card-img-icon");
+                img.src = imageSrc;
+                cardImg.appendChild(img);
+            }
+
+            const cardInfo = document.createElement("div");
+            cardInfo.classList.add("card-info");
+
+            const cardInfoTitle = document.createElement("p");
+            cardInfoTitle.classList.add("card-info-title");
+            cardInfoTitle.textContent = cardData.title;
+            cardInfo.appendChild(cardInfoTitle);
+
+            const cardInfoDetails = document.createElement("div");
+            cardInfoDetails.classList.add("card-info-details");
+
+            const difficultyItem = createDetailsItem(
+                "signal_cellular_alt_2_bar",
+                cardData.difficulty
+            );
+            cardInfoDetails.appendChild(difficultyItem);
+
+            const participantsItem = createDetailsItem(
+                "group",
+                `${cardData.minNumberOfParticipants} - ${cardData.maxNumberOfParticipants}`
+            );
+            cardInfoDetails.appendChild(participantsItem);
+
+            const durationItem = createDetailsItem(
+                "schedule",
+                `${cardData.minDuration} - ${cardData.maxDuration}`
+            );
+            cardInfoDetails.appendChild(durationItem);
+
+            cardInfo.appendChild(cardInfoDetails);
+
+            card.appendChild(cardImg);
+            card.appendChild(cardInfo);
+
+            return card;
+        }
+
+        function createDetailsItem(icon, title) {
+            const item = document.createElement("div");
+            item.classList.add("card-info-details-item");
+
+            const itemIcon = document.createElement("i");
+            itemIcon.classList.add("details-item-icon", "material-icons");
+
+            itemIcon.textContent = icon;
+            item.appendChild(itemIcon);
+
+            const itemTitle = document.createElement("span");
+            itemTitle.classList.add("details-item-title");
+            itemTitle.textContent = title;
+            item.appendChild(itemTitle);
+
+            return item;
         }
 
         function checkAndRender(filteredItems) {
@@ -100,32 +181,46 @@ window.addEventListener('DOMContentLoaded', () => {
                 gallery.appendChild(failMessage);
             } else {
                 // Render filtered items
-                renderCards(filteredItems);
+                renderCardsRow(filteredItems);
             }
         }
 
 
         /*---------- PopUp ---------*/
         const body = document.querySelector("body");
+
         function popupOpen(cardData) {
             popupHeader.innerText = cardData.title;
             popupDifficulty.innerText = cardData.difficulty;
             popupParticipants.innerText = `${cardData.minNumberOfParticipants} - ${cardData.maxNumberOfParticipants}`;
             popupDuration.innerText = `${cardData.minDuration} - ${cardData.maxDuration}`;
             popupMainImage.setAttribute("src", cardData.popupImage);
+            popupPitch.innerText = cardData.pitch;
+            popupDescription.innerText = cardData.description;
+            popupMatirials.innerText = cardData.materials;
+            popupSource.innerText = cardData.source;
+
+            //workshop steps
+            fullStepContainer.innerHTML = "";
+            const steps = cardData.instructions;
+            const stepContainer = document.createElement("div");
+            fullStepContainer.appendChild(stepContainer);
+            for (let i = 0; i<steps.length; i++){
+                let stepHeader = document.createElement("h3");
+                stepHeader.classList.add('main-h3');
+                let stepHeaderText = document.createTextNode(`Step ${i+1}`);
+                stepHeader.appendChild(stepHeaderText);
+                stepContainer.appendChild(stepHeader);
+                let stepPara = document.createElement("div");
+                stepPara.classList.add("main-paragraph");
+                stepPara.innerText = steps[i];
+                stepContainer.appendChild(stepPara);
+            }
+
             popup.classList.add("show");
             body.classList.add("no-scroll");
+            popupWrapper.scrollTo(0, 0);
         }
-
-        gallery.addEventListener("click", (event) => {
-            const clickedCard = event.target.closest(".card");
-            if (clickedCard) {
-                const cardIndex = Array.from(gallery.children).indexOf(clickedCard);
-                const cardData = items[cardIndex];
-                popupOpen(cardData);
-
-            }
-        });
 
         //close popup when user clicks at Close button
         popupClose.addEventListener("click", () => {
@@ -133,8 +228,88 @@ window.addEventListener('DOMContentLoaded', () => {
             body.classList.remove("no-scroll");
         });
 
+        swiperWrapper.addEventListener("click", (event) => {
+            const clickedCard = event.target.closest(".card");
+            if (clickedCard) {
+                // Retrieve the object's ID
+                const cardId = clickedCard.getAttribute('data-id');
+                // Find the corresponding object data
+                const cardData = items.find(item => item.id === parseInt(cardId));
+                if (cardData) {
+                    popupOpen(cardData);
+                }
+            }
+        });
+
+        gallery.addEventListener("click", (event) => {
+            const clickedCard = event.target.closest(".card");
+            if (clickedCard) {
+                const cardId = clickedCard.getAttribute('data-id'); // Retrieve the object's ID
+                const cardData = items.find(item => item.id === parseInt(cardId)); // Find the corresponding object data
+                if (cardData) {
+                    popupOpen(cardData);
+                }
+            }
+        });
+
+        //print the popup content when user clicks "Print" button
+        function popupPrint(){
+            let printOne = popupWrapper.innerHTML;
+            let w = window.open();
+            w.document.write('<html><head><title>Copy Printed</title><link rel="stylesheet" href="css/reset.css"><link rel="stylesheet" href="css/style.css"></head><body>' + printOne + '</body></html>');
+            setTimeout(function() {w.window.print()}, 100);
+            setTimeout(function() {w.close()}, 100);
+            popupWrapper.scrollTo(0, 0);
+            return false;
+        }
+
+        popupPrintBtn.addEventListener("click", popupPrint);
+
+        /* ---------- Swiper ---------- */
+
+        function renderSwiper(items) {
+            const popularItems = items.filter(item => item.isPopular === true);
+            renderCards(popularItems, swiperWrapper);
+
+            const swiper = new Swiper("#swiper-container", {
+                // Optional parameters
+                loop: true,
+                slidesPerView: 1,
+                a11y: true,
+                keyboard: {
+                    enabled: true,
+                },
+
+                breakpoints: {
+                    768: {
+                        slidesPerView: 2,
+                        spaceBetween: 20,
+                    },
+                    1170: {
+                        slidesPerView: 3,
+                        spaceBetween: 30,
+                    },
+                },
+
+
+                // If we need pagination
+                pagination: {
+                    el: ".swiper-pagination",
+                    clickable: true,
+                },
+
+                // Navigation arrows
+                navigation: {
+                    nextEl: "#js-next",
+                    prevEl: "#js-prev",
+                },
+            });
+        }
+
+
 
         /* ---------- Filter ---------- */
+
 
         //Filter Trigger
         const triggerFilter = (bool) => event => {
@@ -160,7 +335,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
         // Fix lateral filter and gallery on scrolling
-        window.addEventListener('scroll', function() {
+        window.addEventListener('scroll', function () {
             // Check if the browser supports requestAnimationFrame
             (!window.requestAnimationFrame) ? fixGallery() : window.requestAnimationFrame(fixGallery);
         });
@@ -218,7 +393,7 @@ window.addEventListener('DOMContentLoaded', () => {
                     filterTabPlaceholderText = event.target.textContent;
 
                     // Add class 'selected' to the selected filter item
-                    filterTab.querySelectorAll('.selected').forEach(function(item) {
+                    filterTab.querySelectorAll('.selected').forEach(function (item) {
                         item.classList.remove('selected');
                     });
                     event.target.classList.add('selected');
@@ -251,11 +426,12 @@ window.addEventListener('DOMContentLoaded', () => {
             // Filter the items
             const filteredItems = items.filter(item => {
                 const itemDifficulty = item.difficulty.toLowerCase();
-                const itemCategory = item.category.toLowerCase();
+                //const itemCategory = item.category.toLowerCase();
 
                 //checks if either no difficulty checkboxes are selected or if the item's difficulty is included in the values array
                 const isDifficultyMatch = selectedDifficulties.length === 0 || selectedDifficulties.includes(itemDifficulty);
-                const isCategoryMatch = selectedCategories.length === 0 || selectedCategories.includes(itemCategory);
+                const isCategoryMatch = selectedCategories.length === 0 || item.category.some(category => selectedCategories.includes(category.toLowerCase()));
+
 
                 // Check if the item matches the range filter
                 const isRangeMatch = (
@@ -301,7 +477,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 fromSlider.value = from;
             }
             // Fill the slider track with color
-            fillSlider(fromInput, toInput, '#C6C6C6', '#0000FF', controlSlider);
+            fillSlider(fromInput, toInput, '#b8c1ec', '#232946', controlSlider);
         }
 
         //sets the maximum value of the range slider and its corresponding #toInput field
@@ -317,13 +493,13 @@ window.addEventListener('DOMContentLoaded', () => {
                 toInput.value = from;
             }
             // Fill the slider track with color
-            fillSlider(fromInput, toInput, '#C6C6C6', '#0000FF', controlSlider);
+            fillSlider(fromInput, toInput, '#b8c1ec', '#232946', controlSlider);
         }
 
         //function updates the #fromInput field when the range slider is adjusted by the user
         function controlFromSlider(fromSlider, toSlider, fromInput) {
             const [from, to] = getParsed(fromSlider, toSlider);
-            fillSlider(fromSlider, toSlider, '#C6C6C6', '#0000FF', toSlider);
+            fillSlider(fromSlider, toSlider, '#b8c1ec', '#232946', toSlider);
             if (from > to) {
                 fromSlider.value = to;
                 fromInput.value = to;
@@ -335,7 +511,7 @@ window.addEventListener('DOMContentLoaded', () => {
         //function updates the #toInput field when the range slider is adjusted by the user
         function controlToSlider(fromSlider, toSlider, toInput) {
             const [from, to] = getParsed(fromSlider, toSlider);
-            fillSlider(fromSlider, toSlider, '#C6C6C6', '#0000FF', toSlider);
+            fillSlider(fromSlider, toSlider, '#b8c1ec', '#232946', toSlider);
             setToggleAccessible(toSlider);
             if (from <= to) {
                 toSlider.value = to;
@@ -384,24 +560,10 @@ window.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        /* ---------- Load-more button ---------- */
-        const loadMore = () => {
-            console.log("current card" + currentCardsToShowAmount);
-            currentCardsToShowAmount = currentCardsToShowAmount + 6;
-            checkAndRender(latestFilteredCardsFull);
-            //renderCards(latestFilteredCardsFull);
-            //to do:
-            // if latestFilterCardsFull.length <= (currentCardsToShowAmount - 6)
-            // then display message & hide load more button
-            // make sure that if cards are rendered again, load more button is shown again
-        }
-        const loadMoreButton = document.getElementById("loadMoreButton");
-        loadMoreButton.addEventListener('click', loadMore)
-
-        fillSlider(fromSlider, toSlider, '#C6C6C6', '#0000FF', toSlider);
+        fillSlider(fromSlider, toSlider, '#b8c1ec', '#232946', toSlider);
         setToggleAccessible(toSlider);
 
-        fillSlider(fromSliderTime, toSliderTime, '#C6C6C6', '#0000FF', toSliderTime);
+        fillSlider(fromSliderTime, toSliderTime, '#b8c1ec', '#232946', toSliderTime);
         setToggleAccessible(toSliderTime);
 
         fromSlider.oninput = () => controlFromSlider(fromSlider, toSlider, fromInput);
