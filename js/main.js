@@ -56,7 +56,9 @@ window.addEventListener('DOMContentLoaded', () => {
     // Fetch JSON data and render initial cards
     fetch('workshops1.json').then(response => response.json()).then(items => {
         // Add the `id` property to each object using the index as the value
-        items = items.map((item, index) => {return { ...item, id: index + 1 };});
+        items = items.map((item, index) => {
+            return {...item, id: index + 1};
+        });
 
         let currentCardsToShowAmount = 6;
         let latestFilteredCardsFull;
@@ -205,10 +207,10 @@ window.addEventListener('DOMContentLoaded', () => {
             const steps = cardData.instructions;
             const stepContainer = document.createElement("div");
             fullStepContainer.appendChild(stepContainer);
-            for (let i = 0; i<steps.length; i++){
+            for (let i = 0; i < steps.length; i++) {
                 let stepHeader = document.createElement("h3");
                 stepHeader.classList.add('main-h3');
-                let stepHeaderText = document.createTextNode(`Step ${i+1}`);
+                let stepHeaderText = document.createTextNode(`Step ${i + 1}`);
                 stepHeader.appendChild(stepHeaderText);
                 stepContainer.appendChild(stepHeader);
                 let stepPara = document.createElement("div");
@@ -253,12 +255,16 @@ window.addEventListener('DOMContentLoaded', () => {
         });
 
         //print the popup content when user clicks "Print" button
-        function popupPrint(){
+        function popupPrint() {
             let printOne = popupWrapper.innerHTML;
             let w = window.open();
             w.document.write('<html><head><title>Copy Printed</title><link rel="stylesheet" href="css/reset.css"><link rel="stylesheet" href="css/style.css"></head><body>' + printOne + '</body></html>');
-            setTimeout(function() {w.window.print()}, 100);
-            setTimeout(function() {w.close()}, 100);
+            setTimeout(function () {
+                w.window.print()
+            }, 100);
+            setTimeout(function () {
+                w.close()
+            }, 100);
             popupWrapper.scrollTo(0, 0);
             return false;
         }
@@ -305,7 +311,6 @@ window.addEventListener('DOMContentLoaded', () => {
                 },
             });
         }
-
 
 
         /* ---------- Filter ---------- */
