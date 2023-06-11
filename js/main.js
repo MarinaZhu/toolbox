@@ -44,7 +44,9 @@ window.addEventListener('DOMContentLoaded', () => {
     const popup = document.querySelector(".popup"),
         popupWrapper = popup.querySelector(".popup-wrapper"),
         popupClose = popup.querySelector(".popup-close-btn"),
+        popupContent = popup.querySelector(".popup-content"),
         popupHeader = popup.querySelector(".popup-header-title"),
+        popupHeaderIconDifficulty = popup.querySelector(".header-info-item-icon__difficulty"),
         popupDifficulty = popup.querySelector(".info-item-title__difficulty"),
         popupParticipants = popup.querySelector(".info-item-title__participants"),
         popupDuration = popup.querySelector(".info-item-title__duration"),
@@ -131,8 +133,7 @@ window.addEventListener('DOMContentLoaded', () => {
             const cardInfoDetails = document.createElement("div");
             cardInfoDetails.classList.add("card-info-details");
 
-            const difficultyItem = createDetailsItem(
-                "signal_cellular_alt_2_bar",
+            const difficultyItem = createDifficultyIcon(
                 cardData.difficulty
             );
             cardInfoDetails.appendChild(difficultyItem);
@@ -155,6 +156,32 @@ window.addEventListener('DOMContentLoaded', () => {
             card.appendChild(cardInfo);
 
             return card;
+        }
+
+        function createDifficultyIcon(difficulty) {
+            const item = document.createElement("div");
+            item.classList.add("card-info-details-item");
+
+            let difficultyImg = document.createElement("img");
+
+            if (difficulty === "Beginner") {
+                difficultyImg.src = "img/img-cards/Difficulty---low.png";
+            } else if (difficulty === "Expert") {
+                difficultyImg.src = "img/img-cards/Difficulty---hard.png";
+            } else {
+                // Default to medium difficulty icon if difficulty level is medium or not recognized
+                difficultyImg.src = "img/img-cards/Difficulty---medium.png";
+            }
+
+            difficultyImg.classList.add("difficulty-item-icon");
+            item.appendChild(difficultyImg);
+
+            const itemTitle = document.createElement("span");
+            itemTitle.classList.add("details-item-title");
+            itemTitle.textContent = difficulty;
+            item.appendChild(itemTitle);
+
+            return item;
         }
 
         function createDetailsItem(icon, title) {
@@ -218,6 +245,15 @@ window.addEventListener('DOMContentLoaded', () => {
             popupMatirials.innerText = cardData.materials;
             popupSource.innerText = cardData.source;
 
+                if (cardData.difficulty === "Beginner") {
+                    popupHeaderIconDifficulty.src = "img/img-cards/Difficulty---low.png";
+                } else if (cardData.difficulty === "Expert") {
+                    popupHeaderIconDifficulty.src = "img/img-cards/Difficulty---hard.png";
+                } else {
+                    // Default to medium difficulty icon if difficulty level is medium or not recognized
+                    popupHeaderIconDifficulty.src = "img/img-cards/Difficulty---medium.png";
+                }
+
             //workshop steps
             fullStepContainer.innerHTML = "";
             const steps = cardData.instructions;
@@ -277,7 +313,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
         //print the popup content when user clicks "Print" button
         function popupPrint() {
-            let printOne = popupWrapper.innerHTML;
+            let printOne = popupContent.innerHTML;
             let w = window.open();
             w.document.write('<html><head><title>Copy Printed</title><link rel="stylesheet" href="css/reset.css"><link rel="stylesheet" href="css/style.css"></head><body>' + printOne + '</body></html>');
             setTimeout(function () {

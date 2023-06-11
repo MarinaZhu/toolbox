@@ -262,8 +262,8 @@ a {
 
 .header-info-item {
     display: flex;
-    align-items: baseline;
-    gap: 3px;
+    align-items: center;
+    gap: 0.8rem;
 }
 
 .header-info-item-title {
@@ -370,7 +370,7 @@ a {
 
     .popup-header-info {
         flex-direction: row;
-        width: 70%;
+        width: 54%;
         height: fit-content;
     }
 }
@@ -396,7 +396,7 @@ a {
     }
 
     .header-info-title {
-        font-size: 2.5rem;
+        font-size: 2rem;
     }
 
     .header-info-item-title {
@@ -866,6 +866,10 @@ header {
     gap: 3px;
 }
 
+.difficulty-item-icon {
+    width: 2rem;
+}
+
 .details-item-icon {
     font-size: 2rem;
 }
@@ -887,6 +891,10 @@ header {
         gap: 5px;
     }
 
+    .difficulty-item-icon {
+        width: 2.5rem;
+    }
+
     .details-item-icon {
         font-size: 2.5rem;
     }
@@ -900,6 +908,10 @@ header {
     .card-info-title {
         font-size: 2.5rem;
         padding-left: 2rem;
+    }
+
+    .difficulty-item-icon {
+        width: 3rem;
     }
 
     .details-item-icon {
@@ -920,6 +932,10 @@ header {
         gap: 0.5rem;
     }
 
+    .difficulty-item-icon {
+        width: 3.3rem;
+    }
+
     .details-item-icon {
         font-size: 3.3rem;
     }
@@ -936,6 +952,10 @@ header {
 
     .card-info-details-item {
         gap: 5px;
+    }
+
+    .difficulty-item-icon {
+        width: 2rem;
     }
 
     .details-item-icon {
