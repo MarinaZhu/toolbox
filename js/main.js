@@ -5,6 +5,10 @@ window.addEventListener('DOMContentLoaded', () => {
     const gallery = document.querySelector(".gallery");
     const swiperWrapper = document.querySelector(".swiper-wrapper");
 
+    /*---------- Search ---------*/
+    const searchInput = document.querySelector('.search-input'),
+          searchIcon = document.querySelector('.search-icon');
+
     /* ---------- Sort ---------- */
     // Mobile version - detect click event on filters tab
     const filterTab = document.querySelector('.tab-filter'),
@@ -51,7 +55,7 @@ window.addEventListener('DOMContentLoaded', () => {
         popupSource = popup.querySelector(".main-paragraph-source"),
         fullStepContainer = document.getElementById("main-steps-container"),
         popupPrintBtn = popup.querySelector(".popup-print-btn");
-
+    const shareButton = document.querySelector('.popup-share-btn');
 
     // Fetch JSON data and render initial cards
     fetch('workshops1.json').then(response => response.json()).then(items => {
@@ -191,6 +195,18 @@ window.addEventListener('DOMContentLoaded', () => {
         /*---------- PopUp ---------*/
         const body = document.querySelector("body");
 
+        // Extract the URL parameters from the current page URL
+        const urlParams = new URLSearchParams(window.location.search);
+        // Get the value of the 'popup' parameter from the URL
+        const popupId = urlParams.get('popup');
+        if (popupId) {
+            // Find the object data in the 'items' array that matches the 'popupId
+            const cardData = items.find(item => item.id === parseInt(popupId)); // Find the corresponding object data
+            if (cardData) {
+                popupOpen(cardData);
+            }
+        }
+
         function popupOpen(cardData) {
             popupHeader.innerText = cardData.title;
             popupDifficulty.innerText = cardData.difficulty;
@@ -228,6 +244,7 @@ window.addEventListener('DOMContentLoaded', () => {
         popupClose.addEventListener("click", () => {
             popup.classList.remove("show");
             body.classList.remove("no-scroll");
+            window.history.pushState(null, '', window.location.pathname); // Remove the 'popup' parameter from the URL
         });
 
         swiperWrapper.addEventListener("click", (event) => {
@@ -239,6 +256,8 @@ window.addEventListener('DOMContentLoaded', () => {
                 const cardData = items.find(item => item.id === parseInt(cardId));
                 if (cardData) {
                     popupOpen(cardData);
+                    // Update the URL with the popup ID
+                    window.history.pushState(null, null, `?popup=${cardData.id}`);
                 }
             }
         });
@@ -250,6 +269,8 @@ window.addEventListener('DOMContentLoaded', () => {
                 const cardData = items.find(item => item.id === parseInt(cardId)); // Find the corresponding object data
                 if (cardData) {
                     popupOpen(cardData);
+                    // Update the URL with the popup ID
+                    window.history.pushState(null, null, `?popup=${cardData.id}`);
                 }
             }
         });
@@ -270,6 +291,52 @@ window.addEventListener('DOMContentLoaded', () => {
         }
 
         popupPrintBtn.addEventListener("click", popupPrint);
+
+        /* ---------- Popup share button ---------- */
+
+        shareButton.addEventListener('click', () => {
+            // Web Share API to invoke the native sharing functionality of the browser
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Shared Popup',
+                    text: 'Check out this popup!',
+                    url: window.location.href
+                })
+                    .catch((error) => {
+                        console.error('Error sharing popup:', error);
+                    });
+            } else {
+                // Fallback behavior if the Web Share API is not supported
+                alert('Sharing is not supported in your browser.');
+            }
+        });
+
+
+        /* ---------- Search ---------- */
+
+        function performSearch() {
+            const searchTerm = searchInput.value.trim().toLowerCase();
+
+            const filteredItems = items.filter(item => {
+                // Search based on title
+                return item.title.toLowerCase().includes(searchTerm);
+            });
+
+            checkAndRender(filteredItems);
+
+            // Clear the search input after performing the search
+            searchInput.value = '';
+        }
+
+        // Add event listener to the search icon for triggering the search
+        searchIcon.addEventListener('click', performSearch);
+
+        // Add event listener to the search input for triggering the search on pressing Enter key
+        searchInput.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                performSearch();
+            }
+        });
 
         /* ---------- Swiper ---------- */
 
@@ -318,7 +385,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
         //Filter Trigger
         const triggerFilter = (bool) => event => {
-            const elementsToTrigger = document.querySelectorAll('.filter-trigger, .filter, .tab-filter, .gallery')
+            const elementsToTrigger = document.querySelectorAll('.filter-trigger, .filter, .tab-filter, .gallery, .footer');
             elementsToTrigger.forEach((element) => {
                 element.classList.toggle('filter-is-visible', bool);
             });
