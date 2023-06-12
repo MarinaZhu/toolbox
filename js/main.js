@@ -315,7 +315,10 @@ window.addEventListener('DOMContentLoaded', () => {
         function popupPrint() {
             let printOne = popupContent.innerHTML;
             let w = window.open();
-            w.document.write('<html><head><title>Copy Printed</title><link rel="stylesheet" href="css/reset.css"><link rel="stylesheet" href="css/style.css"></head><body>' + printOne + '</body></html>');
+            w.document.write('<html><head><title>Copy Printed</title>' +
+                '<link rel="stylesheet" href="css/reset.css">' +
+                '<link rel="stylesheet" href="css/style.css">' +
+                '<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/></head><body>' + printOne + '</body></html>');
             setTimeout(function () {
                 w.window.print()
             }, 100);
