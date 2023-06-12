@@ -273,7 +273,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
             popup.classList.add("show");
             body.classList.add("no-scroll");
-            popupWrapper.scrollTo(0, 0);
+            popupContent.scrollTo(0, 0);
         }
 
         //close popup when user clicks at Close button
