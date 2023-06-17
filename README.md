@@ -36,9 +36,9 @@ The application utilizes the Swiper library to create a responsive and interacti
 ### Data Source
 The workshop data is stored in the workshops1.json file. The application fetches the data using the Fetch API and renders the workshop cards based on the retrieved data. Each workshop object in the JSON file includes properties such as title, difficulty, number of participants, duration, images, pitch, description, materials, source, and instructions.
 
-Dependencies
+### Dependencies
 This project uses the following dependencies:
 
-Swiper (version X.X.X): A library for creating responsive and touch-enabled carousels and sliders.
+Swiper: A library for creating responsive and touch-enabled carousels and sliders.
 Acknowledgments
-This project is based on a template and was developed as a demonstration of web development skills. The design and functionality of the application can be customized and extended to meet specific requirements.
+This project was developed as a demonstration of web development skills. The design and functionality of the application can be customized and extended to meet specific requirements.
