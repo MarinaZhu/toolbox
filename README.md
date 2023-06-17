@@ -1,6 +1,8 @@
 # Kaospilot toolbox
 This project is a web application that displays workshops and allows users to search, filter, and view workshop details. It also includes a popup feature to display additional information about a specific workshop.
 
+Try it here: https://marinazhu.github.io/toolbox/
+
 ## Getting Started
 To get started with the project, follow these steps:
 
